@@ -1,0 +1,36 @@
+#!/bin/bash
+
+echo "GreatOrLess"
+
+left=0
+right=10
+while (( left != right )); do
+echo
+number=$(shuf -i "${left}"-"${right}" -n 1 )
+
+text="great"
+if (( number!=left )) && (( (( number == right )) || (( "${RANDOM}" % 2 == 0 )) )); then
+  text="less"
+fi
+
+echo "Is ${text} then ${number}?"
+ans=""
+while [[ "$ans" != "y" ]] && [[ "$ans" != "n" ]]; do
+  echo "[y/n]"
+  read ans
+done
+
+if [[ "$text" == "less" ]] && [[ "$ans" == "y" ]]; then
+  (( right = number - 1 ))
+elif [[ "$text" == "great" ]] && [[ "$ans" == "n" ]]; then
+  right="$number"
+elif [[ "$text" == "less" ]] && [[ "$ans" == "n" ]]; then
+  left="$number"
+else
+  (( left = number + 1 ))
+fi
+
+done
+
+echo
+echo "This is ${left}!"
